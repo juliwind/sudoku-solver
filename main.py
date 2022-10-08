@@ -1,12 +1,9 @@
 import cv2
 import numpy as np
 from utils import *
-import pytesseract
 
-tesseract_path = 'C:\Program Files\Tesseract-OCR'
-pytesseract.pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\tesseract.exe'
 # ---
-img_path = "Resources/sudoku1  .jpg"
+img_path = "Resources/sudoku2.jpg"
 img_widht, img_height = 810, 810
 
 # ---
