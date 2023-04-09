@@ -5,8 +5,8 @@ from utils import *
 # ---
 img_path = "Resources/sudoku2.jpg"
 img_widht, img_height = 810, 810
-
 # ---
+
 # preprocess Image
 img = cv2.resize(cv2.imread(img_path), (img_widht, img_height))
 
@@ -44,9 +44,6 @@ for i in rows:
     for j in columns:
         all_fields.append(j)
 
-# for i in all_fields:
-   # pytesseract.image_to_string(i)
-
 
 # output
 cv2.imshow("img", img)
@@ -69,4 +66,5 @@ cv2.waitKey(0)
 
 for i in all_fields:
     cv2.imshow("single field", i)
+    print(predict_digit(i))
     cv2.waitKey(0)
