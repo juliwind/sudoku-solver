@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 from utils import *
-
+import matplotlib.pyplot as plt 
+from model import evaluate
 # ---
 img_path = "Resources/sudoku2.jpg"
 img_widht, img_height = 810, 810
@@ -64,7 +65,9 @@ cv2.waitKey(0)
 cv2.imshow("warp perspective black", img_soduko_black)
 cv2.waitKey(0)
 
+idx = 0
 for i in all_fields:
-    cv2.imshow("single field", i)
-    print(predict_digit(i))
-    cv2.waitKey(0)
+    if idx == 4:
+        evaluate(i)
+    idx += 1
+    
