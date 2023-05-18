@@ -1,8 +1,9 @@
 import cv2
+import os
 import numpy as np
 from utils import *
 import matplotlib.pyplot as plt 
-from model import evaluate
+from model import predict
 # ---
 img_path = "Resources/sudoku2.jpg"
 img_widht, img_height = 810, 810
@@ -45,7 +46,7 @@ for i in rows:
     for j in columns:
         all_fields.append(j)
 
-
+"""
 # output
 cv2.imshow("img", img)
 cv2.waitKey(0)
@@ -65,9 +66,59 @@ cv2.waitKey(0)
 cv2.imshow("warp perspective black", img_soduko_black)
 cv2.waitKey(0)
 
+"""
+def preprocess_cell(img):
+        rows = np.shape(img)[0]
+        for i in range(rows):
+            cv2.floodFill(img, None, (0, i), 0)
+            cv2.floodFill(img, None, (i, 0), 0)
+            cv2.floodFill(img, None, (rows-1, i), 0)
+            cv2.floodFill(img, None, (i, rows-1), 0)
+            cv2.floodFill(img, None, (1, i), 1)
+            cv2.floodFill(img, None, (i, 1), 1)
+            cv2.floodFill(img, None, (rows - 2, i), 1)
+            cv2.floodFill(img, None, (i, rows - 2), 1)
+        rowtop = None
+        rowbottom = None
+        colleft = None
+        colright = None
+        thresholdBottom = 50
+        thresholdTop = 50
+        thresholdLeft = 50
+        thresholdRight = 50
+        center = rows // 2
+        for i in range(center, rows):
+            if rowbottom is None:
+                temp = img[i]
+                if sum(temp) < thresholdBottom or i == rows-1:
+                    rowbottom = i
+            if rowtop is None:
+                temp = img[rows-i-1]
+                if sum(temp) < thresholdTop or i == rows-1:
+                    rowtop = rows-i-1
+            if colright is None:
+                temp = img[:, i]
+                if sum(temp) < thresholdRight or i == rows-1:
+                    colright = i
+            if colleft is None:
+                temp = img[:, rows-i-1]
+                if sum(temp) < thresholdLeft or i == rows-1:
+                    colleft = rows-i-1
+        newimg = np.zeros(np.shape(img))
+        startatX = (rows + colleft - colright)//2
+        startatY = (rows - rowbottom + rowtop)//2
+        for y in range(startatY, (rows + rowbottom - rowtop)//2):
+            for x in range(startatX, (rows - colleft + colright)//2):
+                newimg[y, x] = img[rowtop + y - startatY, colleft + x - startatX]
+
+
 idx = 0
 for i in all_fields:
-    if idx == 4:
-        evaluate(i)
+    if idx == 19:
+        preprocess_cell(i)
+        i = cv2.resize(i, (28, 28))
+        cv2.imshow("asd", i)
+        cv2.waitKey(0)
+        print(predict(i))
     idx += 1
     

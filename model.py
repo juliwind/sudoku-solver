@@ -33,10 +33,7 @@ model = tf.keras.models.Sequential([
 model.compile(optimizer=tf.keras.optimizers.RMSprop(epsilon=1e-08), loss='categorical_crossentropy', metrics=['acc'])
 model.load_weights(checkpoint_path)
 
-def evaluate(img):
-    im_resized = cv2.resize(img, (28, 28), interpolation=cv2.INTER_LINEAR)
-    plt.imshow(im_resized, cmap="gray")
-    plt.show()
-    x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], x_test.shape[2], 1)
-    x_test=x_test/255.0
-    print(model.evaluate(im_resized))
+def predict(img):
+    #im_resized = cv2.resize(img, (28, 28), interpolation=cv2.INTER_LINEAR)
+    img = np.reshape(img, (1, 28, 28, 1))
+    return(model.predict(img))

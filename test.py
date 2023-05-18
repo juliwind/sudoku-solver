@@ -5,7 +5,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score
 import tensorflow as tf
 import os
-from model import evaluate
+
 
 checkpoint_path = "model/cp.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
@@ -54,6 +54,4 @@ history = model.fit(x_train, y_train,
                     epochs=epochs,
                     validation_split=0.1,
                     callbacks=[cp_callback])
-
-test_loss, test_acc = model.evaluate(x_test, y_test)
 
